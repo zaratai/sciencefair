@@ -2,17 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-  <meta name="theme-color" content="#050913" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Interact with APOB Protein</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.1.0/3Dmol-min.js"></script>
-
   <style>
     :root{
       --bg1:#050913;
@@ -24,76 +16,46 @@
       --shadow:0 20px 60px rgba(0,0,0,.35);
       --radius:22px;
     }
-
-    *{
-      box-sizing:border-box;
-    }
-
-    html{
-      height:100%;
-      margin:0;
-      padding:0;
-      background:#050913;
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,.15), transparent 25%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      background-attachment:fixed;
-    }
-
+    *{box-sizing:border-box}
     body{
       margin:0;
-      padding:0;
       min-height:100vh;
-      min-height:100dvh;
       color:var(--text);
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-      background:transparent;
-      overscroll-behavior:none;
-      -webkit-overflow-scrolling:touch;
+      background:
+        radial-gradient(circle at top left, rgba(56,189,248,.15), transparent 25%),
+        linear-gradient(180deg,var(--bg1),var(--bg2));
     }
-
     .wrap{
-      width:min(1180px, calc(100% - 12px));
-      margin:0 auto;
-      padding:
-        env(safe-area-inset-top)
-        0
-        max(10px, env(safe-area-inset-bottom));
+      width:min(1180px,calc(100% - 24px));
+      margin:14px auto;
     }
-
     .viewer-card{
       background:var(--panel);
       border:1px solid var(--border);
-      border-radius:18px;
+      border-radius:var(--radius);
       box-shadow:var(--shadow);
       backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-      padding:10px;
-      margin-top:4px;
-      margin-bottom:4px;
+      padding:14px;
     }
-
     .viewer-head{
       display:flex;
       justify-content:space-between;
       align-items:center;
       gap:12px;
       flex-wrap:wrap;
-      padding:2px 2px 10px;
+      padding:2px 2px 12px;
     }
-
     .viewer-label{
       margin:0;
       font-size:1.2rem;
       font-weight:700;
     }
-
     .controls{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
     }
-
     button{
       appearance:none;
       border:1px solid var(--border);
@@ -105,38 +67,28 @@
       cursor:pointer;
       transition:.18s ease;
     }
-
     button:hover{
       transform:translateY(-1px);
       border-color:rgba(56,189,248,.45);
       background:rgba(255,255,255,.10);
     }
-
     button.active{
       background:rgba(56,189,248,.14);
       border-color:rgba(56,189,248,.55);
     }
-
     .viewer-shell{
       position:relative;
       width:100%;
-      height:min(84vh, 900px);
-      height:min(84dvh, 900px);
+      height:min(84vh,900px);
       min-height:560px;
-      border-radius:16px;
+      border-radius:18px;
       overflow:hidden;
       border:1px solid var(--border);
       background:
         radial-gradient(circle at center, rgba(56,189,248,.08), transparent 30%),
         linear-gradient(180deg,#06101f,#020712);
-      touch-action:manipulation;
     }
-
-    #viewer{
-      width:100%;
-      height:100%;
-    }
-
+    #viewer{ width:100%; height:100%; }
     .overlay{
       position:absolute;
       inset:0;
@@ -148,12 +100,7 @@
       z-index:2;
       transition:opacity .35s ease;
     }
-
-    .overlay.hidden{
-      opacity:0;
-      pointer-events:none;
-    }
-
+    .overlay.hidden{ opacity:0; pointer-events:none; }
     .overlay-card{
       max-width:520px;
       padding:14px 16px;
@@ -164,46 +111,19 @@
       font-weight:600;
       line-height:1.5;
     }
-
     .footer{
       padding:8px 4px 2px;
       color:var(--muted);
       font-size:.9rem;
     }
-
-    a{
-      color:#7dd3fc;
-      text-decoration:none;
-    }
-
-    a:hover{
-      text-decoration:underline;
-    }
+    a{ color:#7dd3fc; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
 
     @media (max-width:700px){
-      .wrap{
-        width:min(100% - 8px, 1180px);
-        margin:0 auto;
-        padding:
-          env(safe-area-inset-top)
-          0
-          max(10px, env(safe-area-inset-bottom));
-      }
-
-      .viewer-card{
-        padding:10px;
-        border-radius:18px;
-      }
-
-      .viewer-shell{
-        min-height:420px;
-        height:72vh;
-        height:72dvh;
-      }
-
-      button{
-        width:calc(50% - 4px);
-      }
+      .wrap{ width:min(100% - 14px,1180px); margin:8px auto 14px; }
+      .viewer-card{ padding:12px; }
+      .viewer-shell{ min-height:420px; height:72vh; }
+      button{ width:calc(50% - 4px); }
     }
   </style>
 </head>
@@ -228,10 +148,7 @@
       </div>
 
       <div class="footer">
-        Source:
-        <a href="https://www.rcsb.org/structure/9EA7" target="_blank" rel="noreferrer">
-          RCSB PDB 9EA7
-        </a>
+        Source: <a href="https://www.rcsb.org/structure/9EA7" target="_blank" rel="noreferrer">RCSB PDB 9EA7</a>
       </div>
     </section>
   </main>
@@ -255,10 +172,10 @@
 
     function fitModel() {
       if (!viewer) return;
-
       viewer.zoomTo();
 
       const isMobile = window.innerWidth <= 700;
+
       if (isMobile) {
         viewer.zoom(0.78);
       } else {
@@ -299,12 +216,8 @@
 
     function resetView() {
       if (!viewer) return;
-
-      if (currentMode === "surface") {
-        applySurface();
-      } else {
-        applyCartoon();
-      }
+      if (currentMode === "surface") applySurface();
+      else applyCartoon();
 
       spinning = true;
       viewer.spin(true);
@@ -332,9 +245,7 @@
         viewer.render();
 
         overlay.classList.add("hidden");
-        setTimeout(() => {
-          overlay.style.display = "none";
-        }, 350);
+        setTimeout(() => { overlay.style.display = "none"; }, 350);
       } catch (error) {
         overlayText.innerHTML = "Could not load APOB right now.<br><br>Open the browser console to inspect the error.";
         console.error(error);
