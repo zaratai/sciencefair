@@ -3,33 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" type="image/png" href="./assets/science_fair.png" />
   <title>Interact with APOB Protein</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.1.0/3Dmol-min.js"></script>
   <style>
     :root{
-      --bg1:#050913;
-      --bg2:#091224;
-      --panel:rgba(9,18,36,.82);
-      --text:#f8fafc;
-      --muted:#b8c4d8;
-      --border:rgba(255,255,255,.11);
-      --shadow:0 20px 60px rgba(0,0,0,.35);
+      --bg1:#120814;
+      --bg2:#24112d;
+      --panel:rgba(30,16,36,.82);
+      --text:#fff7fb;
+      --muted:#e4cddd;
+      --border:rgba(255,255,255,.12);
+      --shadow:0 20px 60px rgba(0,0,0,.32);
       --radius:22px;
+      --accent:#f08bb4;
+      --accent-soft:#f7c2d9;
     }
+
     *{box-sizing:border-box}
+
+    html{
+      background:var(--bg1);
+    }
+
     body{
       margin:0;
       min-height:100vh;
       color:var(--text);
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(56,189,248,.15), transparent 25%),
+        radial-gradient(circle at top left, rgba(240,139,180,.18), transparent 24%),
+        radial-gradient(circle at top right, rgba(247,194,217,.12), transparent 22%),
         linear-gradient(180deg,var(--bg1),var(--bg2));
     }
+
     .wrap{
       width:min(1180px,calc(100% - 24px));
       margin:14px auto;
     }
+
     .viewer-card{
       background:var(--panel);
       border:1px solid var(--border);
@@ -38,6 +51,7 @@
       backdrop-filter:blur(16px);
       padding:14px;
     }
+
     .viewer-head{
       display:flex;
       justify-content:space-between;
@@ -46,11 +60,13 @@
       flex-wrap:wrap;
       padding:2px 2px 12px;
     }
+
     .head-left{
       display:flex;
       flex-direction:column;
       gap:8px;
     }
+
     .back-link{
       display:inline-flex;
       align-items:center;
@@ -64,22 +80,26 @@
       font-weight:600;
       transition:.18s ease;
     }
+
     .back-link:hover{
       transform:translateY(-1px);
-      border-color:rgba(56,189,248,.45);
+      border-color:rgba(240,139,180,.45);
       background:rgba(255,255,255,.10);
       text-decoration:none;
     }
+
     .viewer-label{
       margin:0;
       font-size:1.2rem;
       font-weight:700;
     }
+
     .controls{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
     }
+
     button{
       appearance:none;
       border:1px solid var(--border);
@@ -91,15 +111,18 @@
       cursor:pointer;
       transition:.18s ease;
     }
+
     button:hover{
       transform:translateY(-1px);
-      border-color:rgba(56,189,248,.45);
+      border-color:rgba(240,139,180,.45);
       background:rgba(255,255,255,.10);
     }
+
     button.active{
-      background:rgba(56,189,248,.14);
-      border-color:rgba(56,189,248,.55);
+      background:rgba(240,139,180,.14);
+      border-color:rgba(240,139,180,.55);
     }
+
     .viewer-shell{
       position:relative;
       width:100%;
@@ -109,10 +132,12 @@
       overflow:hidden;
       border:1px solid var(--border);
       background:
-        radial-gradient(circle at center, rgba(56,189,248,.08), transparent 30%),
-        linear-gradient(180deg,#06101f,#020712);
+        radial-gradient(circle at center, rgba(240,139,180,.10), transparent 30%),
+        linear-gradient(180deg,#1a0c1f,#0b0610);
     }
+
     #viewer{ width:100%; height:100%; }
+
     .overlay{
       position:absolute;
       inset:0;
@@ -120,27 +145,31 @@
       place-items:center;
       text-align:center;
       padding:24px;
-      background:linear-gradient(180deg,rgba(2,7,18,.48),rgba(2,7,18,.25));
+      background:linear-gradient(180deg,rgba(11,6,16,.48),rgba(11,6,16,.25));
       z-index:2;
       transition:opacity .35s ease;
     }
+
     .overlay.hidden{ opacity:0; pointer-events:none; }
+
     .overlay-card{
       max-width:520px;
       padding:14px 16px;
       border-radius:16px;
       border:1px solid var(--border);
-      background:rgba(10,15,30,.78);
+      background:rgba(26,12,31,.78);
       box-shadow:var(--shadow);
       font-weight:600;
       line-height:1.5;
     }
+
     .footer{
       padding:8px 4px 2px;
       color:var(--muted);
       font-size:.9rem;
     }
-    a{ color:#7dd3fc; text-decoration:none; }
+
+    a{ color:var(--accent-soft); text-decoration:none; }
     a:hover{ text-decoration:underline; }
 
     @media (max-width:700px){
@@ -204,7 +233,7 @@
       const isMobile = window.innerWidth <= 700;
 
       if (isMobile) {
-        viewer.zoom(0.78);
+        viewer.zoom(0.58);
       } else {
         viewer.zoom(0.9);
       }
@@ -227,7 +256,7 @@
       viewer.setStyle({}, {});
       viewer.removeAllSurfaces();
       viewer.setStyle({}, { cartoon: { color: "white", opacity: 0.18 } });
-      viewer.addSurface($3Dmol.VDW, { opacity: 0.78, color: "lightblue" });
+      viewer.addSurface($3Dmol.VDW, { opacity: 0.78, color: "lightpink" });
       currentMode = "surface";
       setActive(surfaceBtn);
       fitModel();
@@ -260,7 +289,7 @@
       const element = document.getElementById("viewer");
 
       viewer = $3Dmol.createViewer(element, {
-        backgroundColor: "#06101f",
+        backgroundColor: "#1a0c1f",
         antialias: false
       });
 
