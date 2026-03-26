@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interact with APOB Protein</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.1.0/3Dmol-min.js"></script>
+  <title>Science Fair 3D Interfaces</title>
   <style>
     :root{
       --bg1:#050913;
@@ -14,256 +13,121 @@
       --muted:#b8c4d8;
       --border:rgba(255,255,255,.11);
       --shadow:0 20px 60px rgba(0,0,0,.35);
-      --radius:22px;
+      --radius:24px;
+      --accent:#38bdf8;
     }
+
     *{box-sizing:border-box}
+
     body{
       margin:0;
       min-height:100vh;
-      color:var(--text);
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--text);
       background:
         radial-gradient(circle at top left, rgba(56,189,248,.15), transparent 25%),
         linear-gradient(180deg,var(--bg1),var(--bg2));
+      display:grid;
+      place-items:center;
+      padding:24px;
     }
+
     .wrap{
-      width:min(1180px,calc(100% - 24px));
-      margin:14px auto;
+      width:min(1100px,100%);
     }
-    .viewer-card{
+
+    .hero{
+      text-align:center;
+      margin-bottom:28px;
+    }
+
+    .hero h1{
+      margin:0 0 10px;
+      font-size:clamp(2rem,4vw,3.4rem);
+      line-height:1.05;
+      letter-spacing:-0.03em;
+    }
+
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:1.05rem;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .card{
+      display:block;
+      text-decoration:none;
+      color:inherit;
       background:var(--panel);
       border:1px solid var(--border);
       border-radius:var(--radius);
+      padding:28px;
       box-shadow:var(--shadow);
+      transition:transform .2s ease,border-color .2s ease,background .2s ease;
       backdrop-filter:blur(16px);
-      padding:14px;
     }
-    .viewer-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-      padding:2px 2px 12px;
-    }
-    .viewer-label{
-      margin:0;
-      font-size:1.2rem;
-      font-weight:700;
-    }
-    .controls{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    button{
-      appearance:none;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      padding:9px 13px;
-      border-radius:999px;
-      font-weight:600;
-      cursor:pointer;
-      transition:.18s ease;
-    }
-    button:hover{
-      transform:translateY(-1px);
-      border-color:rgba(56,189,248,.45);
-      background:rgba(255,255,255,.10);
-    }
-    button.active{
-      background:rgba(56,189,248,.14);
-      border-color:rgba(56,189,248,.55);
-    }
-    .viewer-shell{
-      position:relative;
-      width:100%;
-      height:min(84vh,900px);
-      min-height:560px;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid var(--border);
-      background:
-        radial-gradient(circle at center, rgba(56,189,248,.08), transparent 30%),
-        linear-gradient(180deg,#06101f,#020712);
-    }
-    #viewer{ width:100%; height:100%; }
-    .overlay{
-      position:absolute;
-      inset:0;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      padding:24px;
-      background:linear-gradient(180deg,rgba(2,7,18,.48),rgba(2,7,18,.25));
-      z-index:2;
-      transition:opacity .35s ease;
-    }
-    .overlay.hidden{ opacity:0; pointer-events:none; }
-    .overlay-card{
-      max-width:520px;
-      padding:14px 16px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      background:rgba(10,15,30,.78);
-      box-shadow:var(--shadow);
-      font-weight:600;
-      line-height:1.5;
-    }
-    .footer{
-      padding:8px 4px 2px;
-      color:var(--muted);
-      font-size:.9rem;
-    }
-    a{ color:#7dd3fc; text-decoration:none; }
-    a:hover{ text-decoration:underline; }
 
-    @media (max-width:700px){
-      .wrap{ width:min(100% - 14px,1180px); margin:8px auto 14px; }
-      .viewer-card{ padding:12px; }
-      .viewer-shell{ min-height:420px; height:72vh; }
-      button{ width:calc(50% - 4px); }
+    .card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(56,189,248,.5);
+      background:rgba(12,22,42,.9);
+    }
+
+    .eyebrow{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--border);
+      color:var(--accent);
+      font-size:.85rem;
+      margin-bottom:16px;
+    }
+
+    .card h2{
+      margin:0 0 10px;
+      font-size:1.7rem;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    @media (max-width:800px){
+      .grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <section class="viewer-card">
-      <div class="viewer-head">
-        <p class="viewer-label">Interact with APOB Protein</p>
-        <div class="controls">
-          <button id="cartoonBtn" class="active">Cartoon</button>
-          <button id="surfaceBtn">Surface</button>
-          <button id="spinBtn" class="active">Spin</button>
-          <button id="resetBtn">Reset</button>
-        </div>
-      </div>
+    <section class="hero">
+      <h1>Explore APOB and Gemfibrozil in 3D</h1>
+      <p>Choose a molecular view to explore.</p>
+    </section>
 
-      <div class="viewer-shell">
-        <div id="viewer"></div>
-        <div class="overlay" id="overlay">
-          <div class="overlay-card" id="overlayText">Loading APOB (9EA7)...</div>
-        </div>
-      </div>
+    <section class="grid">
+      <a class="card" href="./apob.html">
+        <div class="eyebrow">Protein Viewer</div>
+        <h2>Interact with APOB Protein</h2>
+        <p>Explore the APOB 3D structure using an interactive viewer with rotation and display controls.</p>
+      </a>
 
-      <div class="footer">
-        Source: <a href="https://www.rcsb.org/structure/9EA7" target="_blank" rel="noreferrer">RCSB PDB 9EA7</a>
-      </div>
+      <a class="card" href="./gemfibrozil.html">
+        <div class="eyebrow">Drug Viewer</div>
+        <h2>Interact with Gemfibrozil</h2>
+        <p>Explore the 3D small-molecule structure of Gemfibrozil, linked to DrugBank ID DB01241.</p>
+      </a>
     </section>
   </main>
-
-  <script>
-    let viewer;
-    let currentMode = "cartoon";
-    let spinning = true;
-
-    const overlay = document.getElementById("overlay");
-    const overlayText = document.getElementById("overlayText");
-    const cartoonBtn = document.getElementById("cartoonBtn");
-    const surfaceBtn = document.getElementById("surfaceBtn");
-    const spinBtn = document.getElementById("spinBtn");
-    const resetBtn = document.getElementById("resetBtn");
-
-    function setActive(button) {
-      [cartoonBtn, surfaceBtn].forEach(btn => btn.classList.remove("active"));
-      button.classList.add("active");
-    }
-
-    function fitModel() {
-      if (!viewer) return;
-      viewer.zoomTo();
-
-      const isMobile = window.innerWidth <= 700;
-
-      if (isMobile) {
-        viewer.zoom(0.78);
-      } else {
-        viewer.zoom(0.9);
-      }
-
-      viewer.render();
-    }
-
-    function applyCartoon() {
-      if (!viewer) return;
-      viewer.setStyle({}, {});
-      viewer.removeAllSurfaces();
-      viewer.setStyle({}, { cartoon: { color: "spectrum" } });
-      currentMode = "cartoon";
-      setActive(cartoonBtn);
-      fitModel();
-    }
-
-    function applySurface() {
-      if (!viewer) return;
-      viewer.setStyle({}, {});
-      viewer.removeAllSurfaces();
-      viewer.setStyle({}, { cartoon: { color: "white", opacity: 0.18 } });
-      viewer.addSurface($3Dmol.VDW, { opacity: 0.78, color: "lightblue" });
-      currentMode = "surface";
-      setActive(surfaceBtn);
-      fitModel();
-    }
-
-    function toggleSpin() {
-      if (!viewer) return;
-      spinning = !spinning;
-      viewer.spin(spinning);
-      spinBtn.classList.toggle("active", spinning);
-      viewer.render();
-    }
-
-    function resetView() {
-      if (!viewer) return;
-      if (currentMode === "surface") applySurface();
-      else applyCartoon();
-
-      spinning = true;
-      viewer.spin(true);
-      spinBtn.classList.add("active");
-      viewer.render();
-    }
-
-    async function initializeViewer() {
-      const element = document.getElementById("viewer");
-
-      viewer = $3Dmol.createViewer(element, {
-        backgroundColor: "#06101f",
-        antialias: true
-      });
-
-      try {
-        const response = await fetch("https://files.rcsb.org/download/9EA7.cif");
-        if (!response.ok) throw new Error("Could not fetch CIF structure.");
-        const cifText = await response.text();
-
-        viewer.addModel(cifText, "cif");
-        applyCartoon();
-        viewer.spin(true);
-        spinBtn.classList.add("active");
-        viewer.render();
-
-        overlay.classList.add("hidden");
-        setTimeout(() => { overlay.style.display = "none"; }, 350);
-      } catch (error) {
-        overlayText.innerHTML = "Could not load APOB right now.<br><br>Open the browser console to inspect the error.";
-        console.error(error);
-      }
-    }
-
-    cartoonBtn.addEventListener("click", applyCartoon);
-    surfaceBtn.addEventListener("click", applySurface);
-    spinBtn.addEventListener("click", toggleSpin);
-    resetBtn.addEventListener("click", resetView);
-
-    window.addEventListener("resize", () => {
-      if (!viewer) return;
-      viewer.resize();
-      fitModel();
-    });
-
-    initializeViewer();
-  </script>
 </body>
 </html>
