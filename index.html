@@ -12,6 +12,7 @@
 
   <title>Interact with APOB Protein</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.1.0/3Dmol-min.js"></script>
+
   <style>
     :root{
       --bg1:#050913;
@@ -24,31 +25,40 @@
       --radius:22px;
     }
 
-    *{box-sizing:border-box}
+    *{
+      box-sizing:border-box;
+    }
 
-    html, body{
+    html{
+      height:100%;
       margin:0;
       padding:0;
-      min-height:100%;
+      background:#050913;
       background:
         radial-gradient(circle at top left, rgba(56,189,248,.15), transparent 25%),
-        linear-gradient(180deg,var(--bg1),var(--bg2));
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      background-attachment:fixed;
     }
 
     body{
+      margin:0;
+      padding:0;
       min-height:100vh;
       min-height:100dvh;
       color:var(--text);
       font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,.15), transparent 25%),
-        linear-gradient(180deg,var(--bg1),var(--bg2));
+      background:transparent;
+      overscroll-behavior:none;
+      -webkit-overflow-scrolling:touch;
     }
 
     .wrap{
-      width:min(1180px,calc(100% - 12px));
+      width:min(1180px, calc(100% - 12px));
       margin:0 auto;
-      padding:4px 0 max(10px, env(safe-area-inset-bottom));
+      padding:
+        env(safe-area-inset-top)
+        0
+        max(10px, env(safe-area-inset-bottom));
     }
 
     .viewer-card{
@@ -59,6 +69,8 @@
       backdrop-filter:blur(16px);
       -webkit-backdrop-filter:blur(16px);
       padding:10px;
+      margin-top:4px;
+      margin-bottom:4px;
     }
 
     .viewer-head{
@@ -108,8 +120,8 @@
     .viewer-shell{
       position:relative;
       width:100%;
-      height:min(84vh,900px);
-      height:min(84dvh,900px);
+      height:min(84vh, 900px);
+      height:min(84dvh, 900px);
       min-height:560px;
       border-radius:16px;
       overflow:hidden;
@@ -117,6 +129,7 @@
       background:
         radial-gradient(circle at center, rgba(56,189,248,.08), transparent 30%),
         linear-gradient(180deg,#06101f,#020712);
+      touch-action:manipulation;
     }
 
     #viewer{
@@ -169,9 +182,12 @@
 
     @media (max-width:700px){
       .wrap{
-        width:min(100% - 8px,1180px);
+        width:min(100% - 8px, 1180px);
         margin:0 auto;
-        padding:4px 0 max(10px, env(safe-area-inset-bottom));
+        padding:
+          env(safe-area-inset-top)
+          0
+          max(10px, env(safe-area-inset-bottom));
       }
 
       .viewer-card{
@@ -239,10 +255,10 @@
 
     function fitModel() {
       if (!viewer) return;
+
       viewer.zoomTo();
 
       const isMobile = window.innerWidth <= 700;
-
       if (isMobile) {
         viewer.zoom(0.78);
       } else {
@@ -283,8 +299,12 @@
 
     function resetView() {
       if (!viewer) return;
-      if (currentMode === "surface") applySurface();
-      else applyCartoon();
+
+      if (currentMode === "surface") {
+        applySurface();
+      } else {
+        applyCartoon();
+      }
 
       spinning = true;
       viewer.spin(true);
@@ -312,7 +332,9 @@
         viewer.render();
 
         overlay.classList.add("hidden");
-        setTimeout(() => { overlay.style.display = "none"; }, 350);
+        setTimeout(() => {
+          overlay.style.display = "none";
+        }, 350);
       } catch (error) {
         overlayText.innerHTML = "Could not load APOB right now.<br><br>Open the browser console to inspect the error.";
         console.error(error);
