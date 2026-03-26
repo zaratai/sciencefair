@@ -135,7 +135,7 @@
         <div class="controls">
           <button id="cartoonBtn" class="active">Cartoon</button>
           <button id="surfaceBtn">Surface</button>
-          <button id="spinBtn">Spin</button>
+          <button id="spinBtn" class="active">Spin</button>
           <button id="resetBtn">Reset</button>
         </div>
       </div>
@@ -156,7 +156,7 @@
   <script>
     let viewer;
     let currentMode = "cartoon";
-    let spinning = false;
+    let spinning = true;
 
     const overlay = document.getElementById("overlay");
     const overlayText = document.getElementById("overlayText");
@@ -170,6 +170,21 @@
       button.classList.add("active");
     }
 
+    function fitModel() {
+      if (!viewer) return;
+      viewer.zoomTo();
+
+      const isMobile = window.innerWidth <= 700;
+
+      if (isMobile) {
+        viewer.zoom(0.78);
+      } else {
+        viewer.zoom(0.9);
+      }
+
+      viewer.render();
+    }
+
     function applyCartoon() {
       if (!viewer) return;
       viewer.setStyle({}, {});
@@ -177,7 +192,7 @@
       viewer.setStyle({}, { cartoon: { color: "spectrum" } });
       currentMode = "cartoon";
       setActive(cartoonBtn);
-      viewer.render();
+      fitModel();
     }
 
     function applySurface() {
@@ -188,7 +203,7 @@
       viewer.addSurface($3Dmol.VDW, { opacity: 0.78, color: "lightblue" });
       currentMode = "surface";
       setActive(surfaceBtn);
-      viewer.render();
+      fitModel();
     }
 
     function toggleSpin() {
@@ -201,12 +216,12 @@
 
     function resetView() {
       if (!viewer) return;
-      spinning = false;
-      viewer.spin(false);
-      spinBtn.classList.remove("active");
       if (currentMode === "surface") applySurface();
       else applyCartoon();
-      viewer.zoomTo();
+
+      spinning = true;
+      viewer.spin(true);
+      spinBtn.classList.add("active");
       viewer.render();
     }
 
@@ -225,7 +240,8 @@
 
         viewer.addModel(cifText, "cif");
         applyCartoon();
-        viewer.zoomTo();
+        viewer.spin(true);
+        spinBtn.classList.add("active");
         viewer.render();
 
         overlay.classList.add("hidden");
@@ -240,7 +256,12 @@
     surfaceBtn.addEventListener("click", applySurface);
     spinBtn.addEventListener("click", toggleSpin);
     resetBtn.addEventListener("click", resetView);
-    window.addEventListener("resize", () => viewer && viewer.resize());
+
+    window.addEventListener("resize", () => {
+      if (!viewer) return;
+      viewer.resize();
+      fitModel();
+    });
 
     initializeViewer();
   </script>
