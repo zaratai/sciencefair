@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>APOB 3D Viewer</title>
+  <title>Interact with APOB Protein</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.1.0/3Dmol-min.js"></script>
   <style>
     :root{
       --bg1:#050913;
       --bg2:#091224;
       --panel:rgba(9,18,36,.82);
-      --panel2:rgba(255,255,255,.05);
       --text:#f8fafc;
       --muted:#b8c4d8;
       --border:rgba(255,255,255,.11);
-      --accent:#38bdf8;
       --shadow:0 20px 60px rgba(0,0,0,.35);
       --radius:22px;
     }
@@ -31,45 +29,15 @@
     .wrap{
       width:min(1180px,calc(100% - 24px));
       margin:14px auto;
-      display:grid;
-      gap:14px;
     }
-    .topbar,.viewer-card{
+    .viewer-card{
       background:var(--panel);
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       backdrop-filter:blur(16px);
+      padding:14px;
     }
-    .topbar{
-      padding:16px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-    .title{
-      margin:0;
-      font-size:clamp(1.5rem,2vw,2.15rem);
-      line-height:1.05;
-      letter-spacing:-.03em;
-    }
-    .sub{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:.95rem;
-    }
-    .badge{
-      padding:9px 12px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:var(--panel2);
-      color:var(--muted);
-      font-size:.9rem;
-      white-space:nowrap;
-    }
-    .viewer-card{ padding:14px; }
     .viewer-head{
       display:flex;
       justify-content:space-between;
@@ -80,7 +48,7 @@
     }
     .viewer-label{
       margin:0;
-      font-size:1.05rem;
+      font-size:1.2rem;
       font-weight:700;
     }
     .controls{
@@ -111,8 +79,8 @@
     .viewer-shell{
       position:relative;
       width:100%;
-      height:min(80vh,860px);
-      min-height:520px;
+      height:min(84vh,900px);
+      min-height:560px;
       border-radius:18px;
       overflow:hidden;
       border:1px solid var(--border);
@@ -153,25 +121,17 @@
 
     @media (max-width:700px){
       .wrap{ width:min(100% - 14px,1180px); margin:8px auto 14px; }
-      .topbar,.viewer-card{ padding:12px; }
-      .viewer-shell{ min-height:420px; height:68vh; }
+      .viewer-card{ padding:12px; }
+      .viewer-shell{ min-height:420px; height:72vh; }
       button{ width:calc(50% - 4px); }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <section class="topbar">
-      <div>
-        <h1 class="title">APOB 3D Protein Viewer</h1>
-        <p class="sub">Interactive structure loaded from PDB ID 9EA7</p>
-      </div>
-      <div class="badge">Custom HTML/CSS/JS + 3Dmol.js</div>
-    </section>
-
     <section class="viewer-card">
       <div class="viewer-head">
-        <p class="viewer-label">Interact with APOB</p>
+        <p class="viewer-label">Interact with APOB Protein</p>
         <div class="controls">
           <button id="cartoonBtn" class="active">Cartoon</button>
           <button id="surfaceBtn">Surface</button>
