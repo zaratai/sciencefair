@@ -192,7 +192,6 @@
           <button id="cartoonBtn" class="active">Cartoon</button>
           <button id="surfaceBtn">Surface</button>
           <button id="spinBtn" class="active">Spin</button>
-          <button id="resetBtn">Reset</button>
         </div>
       </div>
 
@@ -219,7 +218,6 @@
     const cartoonBtn = document.getElementById("cartoonBtn");
     const surfaceBtn = document.getElementById("surfaceBtn");
     const spinBtn = document.getElementById("spinBtn");
-    const resetBtn = document.getElementById("resetBtn");
 
     function setActive(button) {
       [cartoonBtn, surfaceBtn].forEach(btn => btn.classList.remove("active"));
@@ -274,17 +272,6 @@
       viewer.render();
     }
 
-    function resetView() {
-      if (!viewer) return;
-      if (currentMode === "surface") applySurface();
-      else applyCartoon();
-
-      spinning = true;
-      viewer.spin({x: 0, y: 1, z: 0, speed: 0.5});
-      spinBtn.classList.add("active");
-      viewer.render();
-    }
-
     async function initializeViewer() {
       const element = document.getElementById("viewer");
 
@@ -317,7 +304,6 @@
     cartoonBtn.addEventListener("click", applyCartoon);
     surfaceBtn.addEventListener("click", applySurface);
     spinBtn.addEventListener("click", toggleSpin);
-    resetBtn.addEventListener("click", resetView);
 
     window.addEventListener("resize", () => {
       if (!viewer) return;
